@@ -34,8 +34,9 @@
 
       // Listen for messages from external sources (e.g., Framer)
       window.addEventListener('message', (event) => {
-        if (event.data?.type === 'splineState' && event.data.state) {
-          splineApp.setState(event.data.state);
+        if (event.data?.type === "splineEvent") {
+          splineApp.emitEvent(event.data.trigger, event.data.target);
+          console.log("📬 Spline received:", event.data);
         }
       });
     </script>
