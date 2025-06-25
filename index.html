@@ -27,7 +27,8 @@
       import { Application } from 'https://cdn.skypack.dev/@splinetool/runtime';
 
       const canvas = document.getElementById('splineCanvas');
-      const splineApp = new Application(canvas);
+      window.splineApp = new Application(canvas);
+
 
       await splineApp.load('https://prod.spline.design/pjExhGjbZSakxJNu/scene.splinecode');
 
