@@ -24,22 +24,33 @@
     <canvas id="splineCanvas"></canvas>
 
     <script type="module">
-      import { Application } from "https://cdn.jsdelivr.net/npm/@splinetool/runtime@latest/build/runtime.js";
+  console.log("👋 Spline script loaded");
 
+  import { Application } from "https://cdn.jsdelivr.net/npm/@splinetool/runtime@latest/build/runtime.js";
 
-      const canvas = document.getElementById('splineCanvas');
-      window.splineApp = new Application(canvas);
+  const canvas = document.getElementById("splineCanvas");
+  window.splineApp = new Application(canvas);
 
+  console.log("🧠 Canvas + Application created");
 
-      await splineApp.load('https://prod.spline.design/pjExhGjbZSakxJNu/scene.splinecode');
+  await splineApp.load("https://prod.spline.design/pjExhGjbZSakxJNu/scene.splinecode");
+  console.log("✅ Spline scene loaded");
 
-      // Listen for messages from external sources (e.g., Framer)
-      window.addEventListener('message', (event) => {
-        if (event.data?.type === "splineEvent") {
-          splineApp.emitEvent(event.data.trigger, event.data.target);
-          console.log("📬 Spline received:", event.data);
-        }
-      });
-    </script>
+  window.addEventListener("message", (event) => {
+    console.log("👂 Listening for postMessage...");
+    if (event.data?.type === "splineEvent") {
+      console.log("📬 Spline received:", event.data);
+
+      const obj = splineApp.findObjectByName(event.data.target);
+      if (obj) {
+        obj.emitEvent(event.data.trigger);
+        console.log("✅ Event triggered on:", obj.name);
+      } else {
+        console.warn("❌ Object not found:", event.data.target);
+      }
+    }
+  });
+</script>
+
   </body>
 </html>
